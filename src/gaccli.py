@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import argparse
 import subprocess
 import os
@@ -6,8 +7,9 @@ home = os.path.expanduser('~')
 repofile = f"{home}/.config/gac/repos"
 
 def add(name: str, path: str, interval: int) -> bool:
-    gac_running = subprocess.check_output(['systemctl', 'is-active', 'gac_daemon.service'])
-    if gac_running == "inactive":
+    gac_running = subprocess.run(['systemctl', 'is-active', 'gac_daemon.service'], capture_output=True, text=True, check=False)
+
+    if gac_running.stdout.strip() == "inactive":
         print("WARNING: GAC daemon not running, changes will save, but not take effect until it is running.")
         print("Hint: you can start the GAC daemon with `gac start`")
 
@@ -16,7 +18,7 @@ def add(name: str, path: str, interval: int) -> bool:
 
     if os.path.exists(repofile):
         with open(repofile, "r") as f:
-            repo_names = [repo.split(",")[0] for repo in f.readlines()]
+            repo_names = [repo.split(",")[0].strip() for repo in f.readlines()]
             if name in repo_names:
                 print(f"A tracked repository with name '{name}' already exists")
                 return False
@@ -24,11 +26,13 @@ def add(name: str, path: str, interval: int) -> bool:
     with open(repofile, "a") as f:
         f.write(f"{name},{path},{interval}\n")
 
+    print(f"Started tracking repo {name} every {interval} minutes at {path}")
     return True
 
 def remove(name: str) -> bool:
-    gac_running = subprocess.check_output(['systemctl', 'is-active', 'gac_daemon.service'])
-    if gac_running == "inactive":
+    gac_running = subprocess.run(['systemctl', 'is-active', 'gac_daemon.service'], capture_output=True, text=True, check=False)
+
+    if gac_running.stdout.strip() == "inactive":
         print("WARNING: GAC daemon not running, changes will save, but not take effect until it is running.")
         print("Hint: you can start the GAC daemon with `gac start`")
 
@@ -41,7 +45,7 @@ def remove(name: str) -> bool:
 
     new_repos = []
     for repo in repos:
-        if repo.split(",")[0] != name:
+        if repo.split(",")[0].strip() != name:
             new_repos.append(repo)
 
     if len(repos) == len(new_repos):
@@ -51,9 +55,11 @@ def remove(name: str) -> bool:
     with open(repofile, "w") as f:
         f.writelines(new_repos)
 
+    print(f"Stopped tracking repo with name {name}")
     return True
 
 def list(machine: bool) -> bool:
+    err = False
     if not os.path.exists(repofile):
         return True
 
@@ -61,18 +67,24 @@ def list(machine: bool) -> bool:
         repos = f.readlines()
 
     for repo in repos:
-        vals = repo.split(',')
+        vals = [val.strip() for val in repo.split(',')]
+        if len(vals) != 3:
+            print(f"Malformed Entry: {vals}")
+            err = True
+            continue
         if machine:
             print(f"{vals[0]} {vals[2]} {vals[1]}")
         else:
-            print(f"Name: {vals[0]}, Interval: {vals[2]}min, Path: {vals[1]}")
+            print(f"Name: {vals[0]}, Interval: {vals[2]} min, Path: {vals[1]}")
 
+    if err:
+        return False
     return True
 
 def start() -> bool:
     try:
-        result = subprocess.check_output(["systemctl", "is-active", "gac_daemon.service"])
-        if result.strip() == "active":
+        result = subprocess.run(['systemctl', 'is-active', 'gac_daemon.service'], capture_output=True, text=True, check=False)
+        if result.stdout.strip() == "active":
             print(f"GAC deamon already running")
             return False
 
@@ -84,8 +96,8 @@ def start() -> bool:
 
 def stop() -> bool:
     try:
-        result = subprocess.check_output(["systemctl", "is-active", "gac_daemon.service"])
-        if result.strip() == "inactive":
+        result = subprocess.run(['systemctl', 'is-active', 'gac_daemon.service'], capture_output=True, text=True, check=False)
+        if result.stdout.strip() == "inactive":
             print(f"GAC deamon is not running")
             return False
 
@@ -97,8 +109,8 @@ def stop() -> bool:
 
 def status() -> bool:
     try:
-        result = subprocess.check_output(["systemctl", "is-active", "gac_daemon.service"])
-        if result.strip() == "active":
+        result = subprocess.run(['systemctl', 'is-active', 'gac_daemon.service'], capture_output=True, text=True, check=False)
+        if result.stdout.strip() == "active":
             print(f"GAC deamon is running")
         else:
             print(f"GAC deamon is not running")
@@ -117,33 +129,36 @@ parser_add.add_argument("interval", type=int, help="How often in minues to check
 parser_add.add_argument("path", type=str, help="Path of top level directory of desired repo")
 
 parser_rm = subparsers.add_parser('remove', help='Remove a tracked repo by name')
-parser_add.add_argument('name', type=str, help="Name of tracked repo to remove")
+parser_rm.add_argument('name', type=str, help="Name of tracked repo to remove")
 
 parser_list = subparsers.add_parser('list', help='Lists all tracked repos')
 parser_list.add_argument('-m', action='store_true', help="Formats the output to be easier to parse for scripts")
 
-parser_start = subparsers.add_parser('start', help='starts the GAC daemon')
+subparsers.add_parser('start', help='starts the GAC daemon')
 
-parser_stop = subparsers.add_parser('stop', help='stops the GAC daemon')
+subparsers.add_parser('stop', help='stops the GAC daemon')
 
-parser_status = subparsers.add_parser('status', help='gets the status of the GAC daemon')
+subparsers.add_parser('status', help='gets the status of the GAC daemon')
 
 args = parser.parse_args()
 
 if args.action == 'add':
-    add_args = parser_add.parse_args()
-    add(add_args.name, add_args.path, add_args.interval)
+    success = add(args.name, args.path, args.interval)
 elif args.action == 'remove':
-    remove_args = parser_rm.parse_args()
-    remove(remove_args.name)
+    success = remove(args.name)
 elif args.action == 'list':
-    list_args = parser_list.parse_args()
-    list(list_args.m)
+    success = list(args.m)
 elif args.action == 'start':
-    start()
+    success = start()
 elif args.action == 'stop':
-    stop()
+    success = stop()
 elif args.action == 'status':
-    status()
+    success = status()
 else:
     parser.print_help()
+    success = False
+
+if success:
+    exit(0)
+else:
+    exit(1)

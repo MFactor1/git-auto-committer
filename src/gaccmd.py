@@ -13,7 +13,7 @@ def check_diff(path: str) -> bool:
     else:
         return True
 
-def commit_all(path: str, commit_msg=str(datetime.datetime.now())) -> bool:
+def commit_all(path: str, commit_msg=f"Automated commit: {str(datetime.datetime.now())}") -> bool:
     try:
         subprocess.check_call(["git", "add", "."], cwd=path)
         subprocess.check_call(["git", "commit", "-m", commit_msg], cwd=path)
