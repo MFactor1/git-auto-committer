@@ -27,8 +27,8 @@ while True:
     with open(repofile, "r") as f:
         file_repos = f.readlines()
         for repo in file_repos:
-            if repo not in repos:
-                repos[repo] = new_worker(repo.split(',')[0], int(repo.split(',')[1]))
+            if repo != '' and repo not in repos:
+                repos[repo] = new_worker(repo.split(',')[1], int(repo.split(',')[2]))
 
         for repo_key in repos.keys():
             if repo_key not in file_repos:
