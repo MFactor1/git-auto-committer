@@ -85,7 +85,7 @@ def start() -> bool:
     try:
         result = subprocess.run(['systemctl', 'is-active', 'gac_daemon.service'], capture_output=True, text=True, check=False)
         if result.stdout.strip() == "active":
-            print(f"GAC deamon already running")
+            print(f"GAC daemon already running")
             return False
 
         subprocess.run(["systemctl", "start", "gac_daemon.service"], capture_output=True, text=True, check=True)
@@ -98,7 +98,7 @@ def stop() -> bool:
     try:
         result = subprocess.run(['systemctl', 'is-active', 'gac_daemon.service'], capture_output=True, text=True, check=False)
         if result.stdout.strip() == "inactive":
-            print(f"GAC deamon is not running")
+            print(f"GAC daemon is not running")
             return False
 
         subprocess.run(["systemctl", "stop", "gac_daemon.service"], capture_output=True, text=True, check=True)
@@ -111,16 +111,16 @@ def status() -> bool:
     try:
         result = subprocess.run(['systemctl', 'is-active', 'gac_daemon.service'], capture_output=True, text=True, check=False)
         if result.stdout.strip() == "active":
-            print(f"GAC deamon is running")
+            print(f"GAC daemon is running")
         else:
-            print(f"GAC deamon is not running")
+            print(f"GAC daemon is not running")
         return True
 
     except subprocess.CalledProcessError as e:
         print(f"Error: failed to get GAC daemon status: {e.stderr}")
         return False
 
-parser = argparse.ArgumentParser(description='git auto commit commandline')
+parser = argparse.ArgumentParser(description='git-auto-commiter (GAC) CLI')
 subparsers = parser.add_subparsers(dest='action', help='Available actions')
 
 parser_add = subparsers.add_parser('add', help='Add a repo to be tracked')
