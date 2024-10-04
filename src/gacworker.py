@@ -16,7 +16,7 @@ class Worker():
             else:
                 print(f"no diff for {self.path}, skipping")
 
-            if self.stop_sig.wait(timeout=self.interval):
+            if self.stop_sig.wait(timeout= 60 * self.interval):
                 print("returning on stop() command")
                 return
 

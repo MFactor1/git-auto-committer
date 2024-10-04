@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 import argparse
 import subprocess
 import os
@@ -120,45 +119,46 @@ def status() -> bool:
         print(f"Error: failed to get GAC daemon status: {e.stderr}")
         return False
 
-parser = argparse.ArgumentParser(description='git-auto-commiter (GAC) CLI')
-subparsers = parser.add_subparsers(dest='action', help='Available actions')
+def main():
+    parser = argparse.ArgumentParser(description='git-auto-commiter (GAC) CLI')
+    subparsers = parser.add_subparsers(dest='action', help='Available actions')
 
-parser_add = subparsers.add_parser('add', help='Add a repo to be tracked')
-parser_add.add_argument("name", type=str, help="Unique name of tracker entry")
-parser_add.add_argument("interval", type=int, help="How often in minues to check the given repo")
-parser_add.add_argument("path", type=str, help="Path of top level directory of desired repo")
+    parser_add = subparsers.add_parser('add', help='Add a repo to be tracked')
+    parser_add.add_argument("name", type=str, help="Unique name of tracker entry")
+    parser_add.add_argument("interval", type=int, help="How often in minues to check the given repo")
+    parser_add.add_argument("path", type=str, help="Path of top level directory of desired repo")
 
-parser_rm = subparsers.add_parser('remove', help='Remove a tracked repo by name')
-parser_rm.add_argument('name', type=str, help="Name of tracked repo to remove")
+    parser_rm = subparsers.add_parser('remove', help='Remove a tracked repo by name')
+    parser_rm.add_argument('name', type=str, help="Name of tracked repo to remove")
 
-parser_list = subparsers.add_parser('list', help='Lists all tracked repos')
-parser_list.add_argument('-m', action='store_true', help="Formats the output to be easier to parse for scripts")
+    parser_list = subparsers.add_parser('list', help='Lists all tracked repos')
+    parser_list.add_argument('-m', action='store_true', help="Formats the output to be easier to parse for scripts")
 
-subparsers.add_parser('start', help='starts the GAC daemon')
+    subparsers.add_parser('start', help='starts the GAC daemon')
 
-subparsers.add_parser('stop', help='stops the GAC daemon')
+    subparsers.add_parser('stop', help='stops the GAC daemon')
 
-subparsers.add_parser('status', help='gets the status of the GAC daemon')
+    subparsers.add_parser('status', help='gets the status of the GAC daemon')
 
-args = parser.parse_args()
+    args = parser.parse_args()
 
-if args.action == 'add':
-    success = add(args.name, args.path, args.interval)
-elif args.action == 'remove':
-    success = remove(args.name)
-elif args.action == 'list':
-    success = list(args.m)
-elif args.action == 'start':
-    success = start()
-elif args.action == 'stop':
-    success = stop()
-elif args.action == 'status':
-    success = status()
-else:
-    parser.print_help()
-    success = False
+    if args.action == 'add':
+        success = add(args.name, args.path, args.interval)
+    elif args.action == 'remove':
+        success = remove(args.name)
+    elif args.action == 'list':
+        success = list(args.m)
+    elif args.action == 'start':
+        success = start()
+    elif args.action == 'stop':
+        success = stop()
+    elif args.action == 'status':
+        success = status()
+    else:
+        parser.print_help()
+        success = False
 
-if success:
-    exit(0)
-else:
-    exit(1)
+    if success:
+        exit(0)
+    else:
+        exit(1)
