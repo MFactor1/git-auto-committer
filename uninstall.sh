@@ -8,8 +8,7 @@
 
 systemctl stop gac_daemon.service
 
-/usr/bin/env pip uninstall /usr/local/lib/gac
-
+rm -f /usr/local/bin/gac
 rm -f /etc/systemd/system/gac_daemon.service
 rm -rf /usr/local/lib/gac
 systemctl daemon-reload

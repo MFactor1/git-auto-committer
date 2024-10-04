@@ -1,6 +1,13 @@
+#!/usr/bin/env python3
 import argparse
 import subprocess
 import os
+
+try:
+    import gevent
+except ImportError:
+    print("gac requires gevent to be installed.\nTry: `pip install gevent`")
+    exit(1)
 
 home = os.path.expanduser('~')
 repofile = f"{home}/.config/gac/repos"
@@ -121,6 +128,7 @@ def status() -> bool:
 
 def main():
     parser = argparse.ArgumentParser(description='git-auto-commiter (GAC) CLI')
+    parser.add_argument('-v', '--version', action='version', version='git-auto-commiter (GAC) 0.2.4', help='prints the version information')
     subparsers = parser.add_subparsers(dest='action', help='Available actions')
 
     parser_add = subparsers.add_parser('add', help='Add a repo to be tracked')
@@ -162,3 +170,6 @@ def main():
         exit(0)
     else:
         exit(1)
+
+if __name__ == "__main__":
+    main()

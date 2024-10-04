@@ -7,9 +7,10 @@
 
 USER=$(logname)
 
+cp src/gaccli /usr/local/bin/gac
 mkdir /usr/local/lib/gac
 cp src/*.py /usr/local/lib/gac/
-cp uninstall.sh /usr/local/bin/gac/uninstall.sh
+cp uninstall.sh /usr/local/lib/gac/uninstall.sh
 if [ ! -d /home/$USER/.config ]; then
 	mkdir /home/$USER/.config
 fi
@@ -31,7 +32,6 @@ StandardError=journal
 [Install]
 WantedBy=multi-user.target
 EOF
-ln -s $SERVICE_FILE /etc/systemd/sysetm/gac_daemon.service
+ln -s $SERVICE_FILE /etc/systemd/system/gac_daemon.service
 systemctl daemon-reload
 
-/usr/bin/env pip install /usr/local/lib/gac
