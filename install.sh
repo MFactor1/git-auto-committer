@@ -6,16 +6,26 @@
 ################################################################
 
 USER=$(logname)
+BIN_DIR="/usr/local/bin"
+LIB_DIR="/usr/local/lib/gac"
+CONF_DIR="/home/$USER/.config"
+SERVICE_FILE="/usr/local/lib/gac/gac_daemon.service"
+SERVICE_SYMLINK="/etc/systemd/system/gac_daemon.service"
 
-cp src/gaccli /usr/local/bin/gac
-mkdir /usr/local/lib/gac
-cp src/*.py /usr/local/lib/gac/
-cp uninstall.sh /usr/local/lib/gac/uninstall.sh
-if [ ! -d /home/$USER/.config ]; then
-	mkdir /home/$USER/.config
+echo "Copying cli file to $BIN_DIR"
+cp src/gaccli $BIN_DIR/gac
+echo "Copying backend files to $LIB_DIR/"
+mkdir $LIB_DIR
+cp src/*.py $LIB_DIR/
+cp uninstall.sh $LIB_DIR/uninstall.sh
+cp VERSION $LIB_DIR/VERSION
+echo "Checking for ~/.config folder"
+if [ ! -d $CONF_DIR ]; then
+	echo "Creating ~/.config folder"
+	mkdir $CONF_DIR
 fi
 
-SERVICE_FILE="/usr/local/lib/gac/gac_daemon.service"
+echo "writing service file to $SERVICE_FILE"
 touch $SERVICE_FILE
 cat <<EOF > $SERVICE_FILE
 [Unit]
@@ -32,6 +42,8 @@ StandardError=journal
 [Install]
 WantedBy=multi-user.target
 EOF
-ln -s $SERVICE_FILE /etc/systemd/system/gac_daemon.service
+echo "symlinking service file to $SERVICE_SYMLINK"
+ln -s $SERVICE_FILE $SERVICE_SYMLINK
+echo "reloading daemons"
 systemctl daemon-reload
-
+echo "Install Complete"

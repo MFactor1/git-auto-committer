@@ -127,8 +127,11 @@ def status() -> bool:
         return False
 
 def main():
+    with open("/usr/local/lib/gac/VERSION", "r") as f:
+        VERSION = f.readline().strip()
+
     parser = argparse.ArgumentParser(description='git-auto-commiter (GAC) CLI')
-    parser.add_argument('-v', '--version', action='version', version='git-auto-commiter (GAC) 0.2.4', help='prints the version information')
+    parser.add_argument('-v', '--version', action='version', version=f'git-auto-commiter (GAC), Version {VERSION}', help='prints the version information')
     subparsers = parser.add_subparsers(dest='action', help='Available actions')
 
     parser_add = subparsers.add_parser('add', help='Add a repo to be tracked')
