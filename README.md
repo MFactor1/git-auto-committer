@@ -1,4 +1,5 @@
 # git-auto-commiter (GAC)
+
 A CLI tool made by students, for students, to promote transparency throughout the academic process by creating of consistent, traceable, and reliable commits at scheduled intervals.
 
 Students around the world use Git to manage academic projects, where frequent commits are often required to maintain academic integrity. git-auto-commiter (GAC) is a CLI tool created by students, for students, to promote transparency throughout the academic process. GAC automates the creation of consistent, traceable, and reliable commits at scheduled intervals, allowing students to focus on their work without manual interruptions. By automatically committing on behalf of the user, GAC provides a clear record of project progress over time.
