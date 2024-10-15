@@ -5,7 +5,7 @@ GAC gives students peace of mind, knowing they don’t need to worry about frequ
 With the ability to track multiple repositories simultaneously each with their own commit schedule, GAC can handle all your projects at once, while only making new commits on the repositories that actually have changes.
 
 ## Requirements
-- A Linux or other UNIX-like system
+- A Linux or other UNIX-like system using systemd (WSL not yet supported)
 - An installation of python >= 3.5
 - An installation of the gevent python package (Try: `pip install gevent`)
 
@@ -34,5 +34,7 @@ Note: After installation, the cloned repo can be safely deleted. Hint: the unins
 - `gac status`: Prints the status of the GAC daemon (active/inactive). GAC **requires** the GAC daemon to be **active** in order to create commits.
 - `gac start`: Starts the GAC daemon.
 - `gac stop`: Stops the GAC daemon.
+- `gac enable`: Enables run on startup for the GAC daemon.
+- `gac disable`: Disables run on startup for the GAC daemon.
 - `gac -v, --version`: prints version information.
 - `gac -h, --help`: prints a help message.

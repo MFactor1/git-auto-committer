@@ -10,7 +10,7 @@ BIN_DIR="/usr/local/bin"
 LIB_DIR="/usr/local/lib/gac"
 CONF_DIR="/home/$USER/.config"
 SERVICE_FILE="/usr/local/lib/gac/gac_daemon.service"
-SERVICE_SYMLINK="/etc/systemd/system/gac_daemon.service"
+SERVICE_SYMLINK="/usr/lib/systemd/system/gac_daemon.service"
 
 echo "Copying cli file to $BIN_DIR"
 cp src/gaccli $BIN_DIR/gac
@@ -25,7 +25,7 @@ if [ ! -d $CONF_DIR ]; then
 	mkdir $CONF_DIR
 fi
 
-echo "writing service file to $SERVICE_FILE"
+echo "Writing service file to $SERVICE_FILE"
 touch $SERVICE_FILE
 cat <<EOF > $SERVICE_FILE
 [Unit]
@@ -42,8 +42,8 @@ StandardError=journal
 [Install]
 WantedBy=multi-user.target
 EOF
-echo "symlinking service file to $SERVICE_SYMLINK"
+echo "Symlinking service file to $SERVICE_SYMLINK"
 ln -s $SERVICE_FILE $SERVICE_SYMLINK
-echo "reloading daemons"
+echo "Reloading daemons"
 systemctl daemon-reload
 echo "Install Complete"
