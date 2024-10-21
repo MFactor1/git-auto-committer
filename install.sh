@@ -13,10 +13,10 @@ SERVICE_FILE="/usr/local/lib/gac/gac_daemon.service"
 SERVICE_SYMLINK="/usr/lib/systemd/system/gac_daemon.service"
 
 echo "Building source files"
-./build.sh
+./compile
 echo "Copying backend files to $LIB_DIR/"
 mkdir $LIB_DIR
-cp build/*.pyc $LIB_DIR/
+cp build/src/*.pyc $LIB_DIR/
 cp src/gacentry $LIB_DIR/gacentry
 cp uninstall.sh $LIB_DIR/uninstall.sh
 cp VERSION $LIB_DIR/VERSION

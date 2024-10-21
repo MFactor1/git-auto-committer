@@ -60,7 +60,7 @@ sudo systemctl daemon-reload
 %postun
 rm %{_bindir}/gac
 rm %{_unitdir}/gac_daemon.service
-sudo sysetmctl daemon-reload
+sudo systemctl daemon-reload
 
 %changelog
 * Sun Oct 20 2024 MFactor1 <mingsqu@gmail.com>
