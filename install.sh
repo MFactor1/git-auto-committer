@@ -12,13 +12,17 @@ CONF_DIR="/home/$USER/.config"
 SERVICE_FILE="/usr/local/lib/gac/gac_daemon.service"
 SERVICE_SYMLINK="/usr/lib/systemd/system/gac_daemon.service"
 
-echo "Copying cli file to $BIN_DIR"
-cp src/gaccli $BIN_DIR/gac
+echo "Building source files"
+./build.sh
 echo "Copying backend files to $LIB_DIR/"
 mkdir $LIB_DIR
-cp src/*.py $LIB_DIR/
+cp build/*.pyc $LIB_DIR/
+cp src/gacentry $LIB_DIR/gacentry
 cp uninstall.sh $LIB_DIR/uninstall.sh
 cp VERSION $LIB_DIR/VERSION
+echo "Linking entrypoint to $BIN_DIR"
+chmod +x $LIB_DIR/gacentry
+ln -s $LIB_DIR/gacentry $BIN_DIR/gac
 echo "Checking for ~/.config folder"
 if [ ! -d $CONF_DIR ]; then
 	echo "Creating ~/.config folder"
@@ -33,7 +37,7 @@ Description=git-auto-commiter (GAC) daemon
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/env python3 /usr/local/lib/gac/gacmain.py
+ExecStart=/usr/bin/env python3 /usr/local/lib/gac/gacmain.pyc
 Restart=always
 User=$USER
 StandardOutput=journal
@@ -42,7 +46,7 @@ StandardError=journal
 [Install]
 WantedBy=multi-user.target
 EOF
-echo "Symlinking service file to $SERVICE_SYMLINK"
+echo "Linking service file to $SERVICE_SYMLINK"
 ln -s $SERVICE_FILE $SERVICE_SYMLINK
 echo "Reloading daemons"
 systemctl daemon-reload

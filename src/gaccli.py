@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import argparse
 import subprocess
 import os
@@ -169,7 +168,8 @@ def is_active(passthrough=False):
         return False
 
 def main():
-    with open("/usr/local/lib/gac/VERSION", "r") as f:
+    top_lvl_dir = os.path.dirname(os.path.realpath(__file__))
+    with open(f"{top_lvl_dir}/VERSION", "r") as f:
         VERSION = f.readline().strip()
 
     parser = argparse.ArgumentParser(description='git-auto-commiter (GAC) CLI')

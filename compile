@@ -1,0 +1,7 @@
+#!/usr/bin/env python3
+import py_compile
+
+py_compile.compile('src/gaccli.py', cfile='build/gaccli.pyc')
+py_compile.compile('src/gaccmd.py', cfile='build/gaccmd.pyc')
+py_compile.compile('src/gacmain.py', cfile='build/gacmain.pyc')
+py_compile.compile('src/gacworker.py', cfile='build/gacworker.pyc')
