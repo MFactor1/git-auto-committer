@@ -10,7 +10,19 @@ With the ability to track multiple repositories simultaneously each with their o
 - An installation of the gevent python package (Try: `pip install gevent`)
 
 ## Installation
-Currently the only installation method is via the install script, other methods are not _yet_ available.
+### Fedora
+A `.rpm` file is available in the "Releases" section to install via `dnf`.
+
+Download the file and install it with:
+```
+sudo dnf install git-auto-commiter-1.X.X-X.fcXX.noarch.rpm
+```
+For example, installing version `1.0.1` on Fedora 40:
+```
+sudo dnf install git-auto-commiter-1.0.1-1.fc40.noarch.rpm
+```
+### Others
+Currently the only installation method for other systems via the install script, other methods are not _yet_ available.
 Clone this repo, and run the install script with sudo:
 ``` sh
 git clone git@github.com:MFactor1/git-auto-commiter.git
