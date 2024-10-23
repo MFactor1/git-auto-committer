@@ -49,7 +49,8 @@ sudo dnf install ./git-auto-commiter-1.0.2-1.fc40.noarch.rpm
 You can check that the installation was sucessful by running `gac -v`, which should print the name and version.
 ### Others
 Note: MacOS is not supported at this time
-Currently the only installation method for other systems is from source via the install script.
+
+You can install from source via the install script.
 Clone this repo, and run the install script with sudo:
 ``` sh
 git clone git@github.com:MFactor1/git-auto-commiter.git
