@@ -4,25 +4,51 @@ Students around the world use Git to manage academic projects, where frequent co
 GAC gives students peace of mind, knowing they don’t need to worry about frequent manual commits, while instructors benefit from a detailed history of the students' work, readily available for review.
 With the ability to track multiple repositories simultaneously each with their own commit schedule, GAC can handle all your projects at once, while only making new commits on the repositories that actually have changes.
 
+## Table of Contents
+
+- [Requirements](#requirements)
+- [Installation](#installation)
+  - [Ubuntu/WSL](#ubuntuwsl)
+  - [Fedora](#fedora)
+  - [Others](#others)
+- [Usage](#usage)
+
 ## Requirements
-- A Linux or other UNIX-like system using systemd (WSL not yet supported)
+- A Linux or other UNIX-like system using systemd (WSL is supported)
 - An installation of python >= 3.5
 - An installation of the gevent python package (Try: `pip install gevent`)
 
 ## Installation
+### Ubuntu/WSL
+This method will install all dependencies automatically.
+
+A `.deb` file is available in the "Releases" section.
+
+Download the file and install it with:
+```
+sudo apt install <path to file>
+```
+For example, installing version `1.0.2` on Ubuntu/WSL:
+```
+sudo apt install ./git-auto-commiter-1.0.2_all.deb
+```
+You can check that the installation was sucessful by running `gac -v`, which should print the name and version.
 ### Fedora
+This method will install all dependencies automatically.
+
 A `.rpm` file is available in the "Releases" section to install via `dnf`.
 
 Download the file and install it with:
 ```
-sudo dnf install git-auto-commiter-1.X.X-X.fcXX.noarch.rpm
+sudo dnf install <path to file>
 ```
-For example, installing version `1.0.1` on Fedora 40:
+For example, installing version `1.0.2` on Fedora 40:
 ```
-sudo dnf install git-auto-commiter-1.0.1-1.fc40.noarch.rpm
+sudo dnf install ./git-auto-commiter-1.0.2-1.fc40.noarch.rpm
 ```
+You can check that the installation was sucessful by running `gac -v`, which should print the name and version.
 ### Others
-Currently the only installation method for other systems via the install script, other methods are not _yet_ available.
+Currently the only installation method for other systems is from source via the install script.
 Clone this repo, and run the install script with sudo:
 ``` sh
 git clone git@github.com:MFactor1/git-auto-commiter.git
@@ -36,6 +62,7 @@ git clone git@github.com:MFactor1/git-auto-commiter.git
 cd git-auto-commiter
 sudo ./uninstall
 ```
+You can check that the installation was sucessful by running `gac -v`, which should print the name and version.
 
 Note: After installation, the cloned repo can be safely deleted. Hint: the uninstall script is placed in `/usr/local/lib/gac/` upon installation, so you can always find it there.
 
