@@ -33,7 +33,7 @@ After=network.target
 [Service]
 ExecStart=/usr/bin/env python3 $DATA_DIR/gac/gacmain.pyc
 Restart=always
-User=$USER
+User=`whoami`
 StandardOutput=journal
 StandardError=journal
 
