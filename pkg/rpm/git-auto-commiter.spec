@@ -1,5 +1,5 @@
 Name:           git-auto-commiter
-Version:        1.0.1
+Version:        1.0.2
 Release:        1%{?dist}
 Summary:        A simple auto-commiter for git as a cli tool
 
