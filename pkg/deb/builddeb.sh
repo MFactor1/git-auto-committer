@@ -1,7 +1,7 @@
 #!/bin/bash
 
 NAME=git-auto-commiter
-VERSION=1.0.1
+VERSION=1.0.2
 BLD_DIR=/home/$USER/$NAME-$VERSION-1_all
 REPO_DIR=`dirname $0`/../../
 DATA_DIR=/usr/share
@@ -67,6 +67,5 @@ EOF
 chmod +x $BLD_DIR/DEBIAN/postinst
 chmod +x $BLD_DIR/DEBIAN/postrm
 
-rm -rf $REPO_DIR/build/deb/$NAME-$VERSION-1_all.deb
 dpkg-deb --build --root-owner-group $BLD_DIR $REPO_DIR/build/deb/
 rm -rf $BLD_DIR
